@@ -17,6 +17,7 @@ export const FabricCanvas = ({ screenshotUrl }: FabricProps) => {
 
     FabricImage.fromURL(screenshotUrl).then((img) => {
       canvas.add(img); // 画像をキャンバスに追加
+      img.scaleToWidth(canvas.height!); // 画像をキャンバスの縦幅に合わせる
       canvas.renderAll(); // キャンバスを再描画
     }).catch((error) => {
       console.error('Error loading image:', error);
