@@ -57,8 +57,6 @@ export const FabricCanvas = ({ screenshotUrl, addTextRef, addMosaicRef, addShape
 
     addMosaicRef.current = () => {
       FabricImage.fromURL(mosaicPatternImg).then((img) => {
-        console.log(mosaicPatternImg)
-        console.log("img",img)
         const pattern = new Pattern({
           source: img._element,
           repeat: 'repeat',
