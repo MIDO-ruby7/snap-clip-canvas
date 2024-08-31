@@ -10,14 +10,15 @@ function App() {
   const addShapeRef = useRef<(shape: 'rectangle' | 'circle') => void>(() => {});
 
   const handleAddText = () => {
-    console.log("handleAddText")
     addTextRef.current();
   }
   const handleAddMosaic = () => {
     console.log("handleAddMosaic")
+    addMosaicRef.current();
   }
   const handleAddShape = () => {
     console.log("handleAddShape")
+    // addShapeRef.current();
   }
 
   return (
