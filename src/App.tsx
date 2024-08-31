@@ -16,9 +16,9 @@ function App() {
     console.log("handleAddMosaic")
     addMosaicRef.current();
   }
-  const handleAddShape = () => {
+  const handleAddShape = (shape: 'rectangle' | 'circle') => {
     console.log("handleAddShape")
-    // addShapeRef.current();
+    addShapeRef.current(shape);
   }
 
   return (

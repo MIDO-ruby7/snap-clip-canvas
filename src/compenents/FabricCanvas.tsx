@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { Canvas, FabricImage, Textbox, Rect, Pattern } from 'fabric';
+import { Canvas, FabricImage, Textbox, Rect, Pattern, Circle } from 'fabric';
 import type { FabricProps } from '../types/fabricCanvas';
 import mosaicPatternImg from '../assets/mosaicPattern.png';
 
-export const FabricCanvas = ({ screenshotUrl, addTextRef, addMosaicRef }: FabricProps) => {
+export const FabricCanvas = ({ screenshotUrl, addTextRef, addMosaicRef, addShapeRef }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -51,6 +51,7 @@ export const FabricCanvas = ({ screenshotUrl, addTextRef, addMosaicRef }: Fabric
     }
   }, [addTextRef]);
 
+  // モザイク
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -77,6 +78,38 @@ export const FabricCanvas = ({ screenshotUrl, addTextRef, addMosaicRef }: Fabric
       });
     }
   }, [addMosaicRef]);
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    addShapeRef.current = (shape: 'rectangle' | 'circle') => {
+      let shapeObj;
+      if (shape === 'rectangle') {
+        shapeObj = new Rect({
+          left: 100,
+          top: 100,
+          width: 200,
+          height: 40,
+          fill: 'transparent',
+          stroke: 'red',
+          strokeWidth: 2,
+        });
+      } else if (shape === 'circle') {
+        shapeObj = new Circle({
+          left: 150,
+          top: 150,
+          radius: 50,
+          fill: 'green'
+        });
+      }
+
+      if (shapeObj) {
+        canvasRef.current?.add(shapeObj);
+        canvasRef.current?.renderAll();
+      }
+    }
+  }, [addShapeRef]);
+
   return <canvas ref={canvasEl}/>;
 }
 
