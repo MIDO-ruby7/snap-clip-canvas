@@ -3,7 +3,7 @@ import { Canvas, FabricImage, Textbox, Rect, Pattern, Circle } from 'fabric';
 import type { FabricProps } from '../types/fabricCanvas';
 import mosaicPatternImg from '../assets/mosaicPattern.png';
 
-export const FabricCanvas = ({ screenshotUrl, addTextRef, addMosaicRef, addShapeRef }: FabricProps) => {
+export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -20,7 +20,7 @@ export const FabricCanvas = ({ screenshotUrl, addTextRef, addMosaicRef, addShape
     const canvas = new Canvas(canvasEl.current, options);
     canvasRef.current = canvas;
 
-    FabricImage.fromURL(screenshotUrl).then((img) => {
+    FabricImage.fromURL(imageData).then((img) => {
       canvas.add(img); // 画像をキャンバスに追加
       canvas.renderAll(); // キャンバスを再描画
     }).catch((error) => {
@@ -30,7 +30,7 @@ export const FabricCanvas = ({ screenshotUrl, addTextRef, addMosaicRef, addShape
     return () => {
       canvas.dispose(); // クリーンアップ
     };
-  }, [screenshotUrl]);
+  }, [imageData]);
 
   // TextBox
   useEffect(() => {
