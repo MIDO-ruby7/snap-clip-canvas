@@ -16,6 +16,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
       width: 1000,
       height: 600,
       selection: false, // 選択の無効化
+      preserveObjectStacking: true, // オブジェクト選択時に自動的に最前面に移動しないようにする
     }
     const canvas = new Canvas(canvasEl.current, options);
     canvasRef.current = canvas;
