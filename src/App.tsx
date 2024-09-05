@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     const handleMessage =  (event: MessageEvent) => {
       // セキュリティのためオリジンを確認する
-      if (event.origin === "https://snap-clip-canvas-1du26zqvz-midoruby7s-projects.vercel.app" &&
+      if (event.origin === "https://snap-clip-canvas.vercel.app" &&
         event.data.imageData) {
         setImageData(event.data.imageData);
       }
