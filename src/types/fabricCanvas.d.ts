@@ -5,7 +5,7 @@ export type ToolbarProps = {
 }
 
 export type FabricProps = {
-  screenshotUrl: string;
+  imageData: string;
   addTextRef: MutableRefObject<() => void>;
   addMosaicRef: MutableRefObject<() => void>;
   addShapeRef: MutableRefObject<() => void>;

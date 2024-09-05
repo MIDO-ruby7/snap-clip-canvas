@@ -1,13 +1,30 @@
 import FabricCanvas from './compenents/FabricCanvas'
 import './App.css'
 import Toolbar from './compenents/Toolbar'
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function App() {
-  const url = "https://iconbu.com/wp-content/uploads/2023/07/%E3%82%B5%E3%82%AB%E3%83%90%E3%83%B3%E3%83%90%E3%82%B9%E3%83%94%E3%82%B9.jpg"
+  const [imageData, setImageData] = useState<string | null>(null);
   const addTextRef = useRef<() => void>(() => {});
   const addMosaicRef = useRef<() => void>(() => {});
   const addShapeRef = useRef<(shape: 'rectangle' | 'circle') => void>(() => {});
+
+  useEffect(() => {
+    const handleMessage =  (event: MessageEvent) => {
+      // セキュリティのためオリジンを確認する
+      if (event.origin === "https://snap-clip-canvas-1du26zqvz-midoruby7s-projects.vercel.app" &&
+        event.data.imageData) {
+        setImageData(event.data.imageData);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      // クリーンアップ
+      window.removeEventListener('message', handleMessage);
+    }
+  }, []);
 
   const handleAddText = () => {
     addTextRef.current();
@@ -18,6 +35,7 @@ function App() {
   const handleAddShape = (shape: 'rectangle' | 'circle') => {
     addShapeRef.current(shape);
   }
+  const defaultImage =  "https://iconbu.com/wp-content/uploads/2023/07/%E3%82%B5%E3%82%AB%E3%83%90%E3%83%B3%E3%83%90%E3%82%B9%E3%83%94%E3%82%B9.jpg"
 
   return (
     <>
@@ -28,7 +46,7 @@ function App() {
           onAddShape={handleAddShape}
         />
         <FabricCanvas
-          screenshotUrl={url}
+          imageData={imageData || defaultImage}
           addTextRef={addTextRef}
           addMosaicRef={addMosaicRef}
           addShapeRef = {addShapeRef}
