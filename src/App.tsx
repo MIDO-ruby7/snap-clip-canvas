@@ -39,12 +39,12 @@ function App() {
 
   return (
     <>
-      <div className="canvas">
-        <Toolbar
+      <Toolbar
           onAddText={handleAddText}
           onAddMosaic={handleAddMosaic}
           onAddShape={handleAddShape}
         />
+      <div className="canvas">
         <FabricCanvas
           imageData={imageData || defaultImage}
           addTextRef={addTextRef}
