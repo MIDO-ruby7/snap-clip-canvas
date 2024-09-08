@@ -7,4 +7,5 @@
 
 .canvas {
   background-color: gray;
+  display: inline-block;
 }
