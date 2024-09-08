@@ -146,6 +146,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
     }
   }, [addShapeRef]);
 
+  // 削除
   useEffect(() => {
     const handleKeyUp = (e: KeyboardEvent) => {
       if (canvasRef.current && (e.key === "Escape" || e.key === "Backspace")) {
