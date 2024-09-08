@@ -29,6 +29,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
         const img = await FabricImage.fromURL(imageData)
         const imgWidth = img.width || 0;
         const imgHeight = img.height || 0;
+        img.selectable = false; // 選択を無効化
 
         let newCanvasWidth = imgWidth;
         let newCanvasHeight = imgHeight;
