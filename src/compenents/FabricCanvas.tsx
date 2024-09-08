@@ -91,8 +91,9 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    addMosaicRef.current = () => {
-      FabricImage.fromURL(mosaicPatternImg).then((img) => {
+    addMosaicRef.current = async () => {
+      try {
+        const img = await FabricImage.fromURL(mosaicPatternImg)
         const pattern = new Pattern({
           source: img._element,
           repeat: 'repeat',
@@ -107,9 +108,9 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
         });
         canvasRef.current?.add(mosaicPattern);
         canvasRef.current?.renderAll();
-      }).catch((error) => {
+      } catch(error) {
         console.error('Error loading mosaic pattern image:', error);
-      });
+      };
     }
   }, [addMosaicRef]);
 
