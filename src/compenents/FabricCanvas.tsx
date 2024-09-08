@@ -114,6 +114,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
     }
   }, [addMosaicRef]);
 
+  // 円形
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -144,6 +145,24 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
       }
     }
   }, [addShapeRef]);
+
+  useEffect(() => {
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (canvasRef.current && (e.key === "Escape" || e.key === "Backspace")) {
+        const activeObject = canvasRef.current.getActiveObject();
+        if (activeObject) {
+          canvasRef.current.remove(activeObject)
+          canvasRef.current.renderAll();
+        }
+      }
+    };
+
+    document.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [])
 
   return <canvas ref={canvasEl}/>;
 }
