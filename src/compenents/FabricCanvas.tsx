@@ -67,83 +67,91 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
     };
   }, [imageData]);
 
-
   // TextBox
-  useEffect(() => {
-    if (!canvasRef.current) return;
+  addTextRef.current = () => {
+    const textbox = new Textbox('Enter text here', {
+      left: 100,
+      top: 100,
+      width: 200,
+      fontSize: 20,
+      fill: '#000000',
+    });
 
-    addTextRef.current = () => {
-      const textbox = new Textbox('Enter text here', {
+    canvasRef.current?.add(textbox);
+    canvasRef.current?.setActiveObject(textbox);
+    canvasRef.current?.renderAll();
+  }
+
+
+  // モザイク
+  addMosaicRef.current = async () => {
+    try {
+      const img = await FabricImage.fromURL(mosaicPatternImg)
+      const pattern = new Pattern({
+        source: img._element,
+        repeat: 'repeat',
+      });
+
+      const mosaicPattern = new Rect({
         left: 100,
         top: 100,
         width: 200,
-        fontSize: 20,
-        fill: '#000000',
+        height: 40,
+        fill: pattern
       });
+      canvasRef.current?.add(mosaicPattern);
+      canvasRef.current?.renderAll();
+    } catch(error) {
+      console.error('Error loading mosaic pattern image:', error);
+    };
+  }
 
-      canvasRef.current?.add(textbox);
-      canvasRef.current?.setActiveObject(textbox);
+  // 円形
+  addShapeRef.current = (shape: 'rectangle' | 'circle') => {
+    let shapeObj;
+    if (shape === 'rectangle') {
+      shapeObj = new Rect({
+        left: 100,
+        top: 100,
+        width: 200,
+        height: 40,
+        fill: 'transparent',
+        stroke: 'red',
+        strokeWidth: 2,
+      });
+    } else if (shape === 'circle') {
+      shapeObj = new Circle({
+        left: 150,
+        top: 150,
+        radius: 50,
+        fill: 'green'
+      });
+    }
+
+    if (shapeObj) {
+      canvasRef.current?.add(shapeObj);
       canvasRef.current?.renderAll();
     }
-  }, [addTextRef]);
+  }
 
-  // モザイク
+  // オブジェクトの削除
   useEffect(() => {
-    if (!canvasRef.current) return;
-
-    addMosaicRef.current = async () => {
-      try {
-        const img = await FabricImage.fromURL(mosaicPatternImg)
-        const pattern = new Pattern({
-          source: img._element,
-          repeat: 'repeat',
-        });
-
-        const mosaicPattern = new Rect({
-          left: 100,
-          top: 100,
-          width: 200,
-          height: 40,
-          fill: pattern
-        });
-        canvasRef.current?.add(mosaicPattern);
-        canvasRef.current?.renderAll();
-      } catch(error) {
-        console.error('Error loading mosaic pattern image:', error);
-      };
-    }
-  }, [addMosaicRef]);
-
-  useEffect(() => {
-    if (!canvasRef.current) return;
-
-    addShapeRef.current = (shape: 'rectangle' | 'circle') => {
-      let shapeObj;
-      if (shape === 'rectangle') {
-        shapeObj = new Rect({
-          left: 100,
-          top: 100,
-          width: 200,
-          height: 40,
-          fill: 'transparent',
-          stroke: 'red',
-          strokeWidth: 2,
-        });
-      } else if (shape === 'circle') {
-        shapeObj = new Circle({
-          left: 150,
-          top: 150,
-          radius: 50,
-          fill: 'green'
-        });
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (canvasRef.current && (e.key === "Escape" || e.key === "Backspace")) {
+        const activeObject = canvasRef.current.getActiveObject();
+        if (activeObject) {
+          canvasRef.current.remove(activeObject)
+          canvasRef.current.renderAll();
+        }
       }
+    };
 
-      if (shapeObj) {
-        canvasRef.current?.add(shapeObj);
-        canvasRef.current?.renderAll();
-      }
-    }
-  }, [addShapeRef]);
+    document.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [])
 
   return <canvas ref={canvasEl}/>;
 }
