@@ -106,7 +106,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
     };
   }
 
-  // 円形
+  // 図形
   addShapeRef.current = (shape: 'rectangle' | 'circle') => {
     let shapeObj;
     if (shape === 'rectangle') {
@@ -139,10 +139,19 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (canvasRef.current && (e.key === "Escape" || e.key === "Backspace")) {
         const activeObject = canvasRef.current.getActiveObject();
-        if (activeObject) {
-          canvasRef.current.remove(activeObject)
-          canvasRef.current.renderAll();
+
+        if (!activeObject) return;
+
+        if (activeObject instanceof Textbox) {
+          if (activeObject.text === "") {
+            canvasRef.current.remove(activeObject);
+            canvasRef.current.renderAll();
+          }
+          return;
         }
+
+        canvasRef.current.remove(activeObject);
+        canvasRef.current.renderAll();
       }
     };
 
