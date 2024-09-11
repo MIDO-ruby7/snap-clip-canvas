@@ -7,6 +7,7 @@ import defaultImage from './assets/no_image.png';
 function App() {
   const [imageData, setImageData] = useState<string | null>(null);
   const addTextRef = useRef<(() => void) | null>(null);
+  const addLineRef = useRef<(() => void) | null>(null);
   const addMosaicRef = useRef<(() => void) | null>(null);
   const addShapeRef = useRef<((shape: 'rectangle' | 'ellipse') => void) | null>(null);
   const saveRef = useRef<(() => void) | null>(null);
@@ -33,6 +34,9 @@ function App() {
   const handleAddText = () => {
     addTextRef.current?.();
   }
+  const handleAddLine = () => {
+    addLineRef.current?.();
+  }
   const handleAddMosaic = () => {
     addMosaicRef.current?.();
   }
@@ -51,6 +55,7 @@ function App() {
       <Toolbar
           onAddText={handleAddText}
           onFontWeight={handleFontWeight}
+          onAddLine={handleAddLine}
           onAddMosaic={handleAddMosaic}
           onAddShape={handleAddShape}
           onSave={handleSave}
@@ -59,6 +64,7 @@ function App() {
         <FabricCanvas
           imageData={imageData || defaultImage}
           addTextRef={addTextRef}
+          addLineRef={addLineRef}
           fontWeightRef={fontWeightRef}
           addMosaicRef={addMosaicRef}
           addShapeRef = {addShapeRef}
