@@ -142,7 +142,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef,
         if (!activeObject) return;
 
         if (activeObject instanceof Textbox) {
-          if (!activeObject.isEditing && activeObject.text.trim() === "") {
+          if (!activeObject.isEditing) {
             canvasRef.current.remove(activeObject);
             canvasRef.current.renderAll();
           }

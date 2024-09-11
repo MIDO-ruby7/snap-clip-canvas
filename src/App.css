@@ -8,4 +8,5 @@
 .canvas {
   background-color: gray;
   display: inline-block;
+  margin-top: 10px;
 }
