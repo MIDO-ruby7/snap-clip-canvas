@@ -10,6 +10,7 @@ function App() {
   const addMosaicRef = useRef<(() => void) | null>(null);
   const addShapeRef = useRef<((shape: 'rectangle' | 'ellipse') => void) | null>(null);
   const saveRef = useRef<(() => void) | null>(null);
+  const fontWeightRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const handleMessage =  (event: MessageEvent) => {
@@ -41,11 +42,15 @@ function App() {
   const handleSave = () => {
     saveRef.current?.();
   }
+  const handleFontWeight = () => {
+    fontWeightRef.current?.();
+  }
 
   return (
     <>
       <Toolbar
           onAddText={handleAddText}
+          onFontWeight={handleFontWeight}
           onAddMosaic={handleAddMosaic}
           onAddShape={handleAddShape}
           onSave={handleSave}
@@ -54,6 +59,7 @@ function App() {
         <FabricCanvas
           imageData={imageData || defaultImage}
           addTextRef={addTextRef}
+          fontWeightRef={fontWeightRef}
           addMosaicRef={addMosaicRef}
           addShapeRef = {addShapeRef}
           saveRef={saveRef}
