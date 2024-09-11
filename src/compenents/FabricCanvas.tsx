@@ -3,7 +3,7 @@ import { Canvas, FabricImage, Textbox, Rect, Pattern, Circle } from 'fabric';
 import type { FabricProps } from '../types/fabricCanvas';
 import mosaicPatternImg from '../assets/mosaicPattern.png';
 
-export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef }: FabricProps) => {
+export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef, saveRef }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -82,7 +82,6 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
     canvasRef.current?.renderAll();
   }
 
-
   // モザイク
   addMosaicRef.current = async () => {
     try {
@@ -143,7 +142,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
         if (!activeObject) return;
 
         if (activeObject instanceof Textbox) {
-          if (activeObject.text === "") {
+          if (!activeObject.isEditing && activeObject.text.trim() === "") {
             canvasRef.current.remove(activeObject);
             canvasRef.current.renderAll();
           }
@@ -162,7 +161,23 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef 
     };
   }, [])
 
-  return <canvas ref={canvasEl}/>;
-}
+  // 保存
+  saveRef.current = () => {
+    if (!canvasRef.current) return;
+
+    const dataURL = canvasRef.current.toDataURL({
+      format: 'png',
+      quality: 1.0,
+      multiplier: 1.0
+    });
+
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'canvas-image.png';
+    link.click();
+  };
+
+  return <canvas ref={canvasEl} />;
+};
 
 export default FabricCanvas;

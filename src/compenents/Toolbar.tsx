@@ -1,6 +1,6 @@
 import type { ToolbarProps } from "../types/fabricCanvas";
 
-const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape, onSave }) => {
   return (
     <div>
       <div>
@@ -9,6 +9,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape })
         <button onClick={() => onAddShape('rectangle')}>Add Rectangle</button>
         <button onClick={() => onAddShape('circle')}>Add Circle</button>
       </div>
+      <button onClick={onSave} style={{ margin: '0 10px' }}>Save</button>
     </div>
   )
 }

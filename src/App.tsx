@@ -2,19 +2,22 @@ import FabricCanvas from './compenents/FabricCanvas'
 import './App.css'
 import Toolbar from './compenents/Toolbar'
 import { useState, useEffect, useRef } from 'react';
+import defaultImage from './assets/no_image.png';
 
 function App() {
   const [imageData, setImageData] = useState<string | null>(null);
-  const addTextRef = useRef<() => void>(() => {});
-  const addMosaicRef = useRef<() => void>(() => {});
-  const addShapeRef = useRef<(shape: 'rectangle' | 'circle') => void>(() => {});
+  const addTextRef = useRef<(() => void) | null>(null);
+  const addMosaicRef = useRef<(() => void) | null>(null);
+  const addShapeRef = useRef<((shape: 'rectangle' | 'circle') => void) | null>(null);
+  const saveRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const handleMessage =  (event: MessageEvent) => {
       // セキュリティのためオリジンを確認する
-      if (event.origin === "https://snap-clip-canvas.vercel.app" &&
-        event.data.imageData) {
-        setImageData(event.data.imageData);
+      if (event.origin === "https://snap-clip-canvas.vercel.app") {
+        if (typeof event.data.imageData === 'string') {
+          setImageData(event.data.imageData);
+        }
       }
     };
 
@@ -27,15 +30,17 @@ function App() {
   }, []);
 
   const handleAddText = () => {
-    addTextRef.current();
+    addTextRef.current?.();
   }
   const handleAddMosaic = () => {
-    addMosaicRef.current();
+    addMosaicRef.current?.();
   }
   const handleAddShape = (shape: 'rectangle' | 'circle') => {
-    addShapeRef.current(shape);
+    addShapeRef.current?.(shape);
   }
-  const defaultImage =  "https://iconbu.com/wp-content/uploads/2023/07/%E3%82%B5%E3%82%AB%E3%83%90%E3%83%B3%E3%83%90%E3%82%B9%E3%83%94%E3%82%B9.jpg"
+  const handleSave = () => {
+    saveRef.current?.();
+  }
 
   return (
     <>
@@ -43,6 +48,7 @@ function App() {
           onAddText={handleAddText}
           onAddMosaic={handleAddMosaic}
           onAddShape={handleAddShape}
+          onSave={handleSave}
         />
       <div className="canvas">
         <FabricCanvas
@@ -50,6 +56,7 @@ function App() {
           addTextRef={addTextRef}
           addMosaicRef={addMosaicRef}
           addShapeRef = {addShapeRef}
+          saveRef={saveRef}
         />
       </div>
     </>

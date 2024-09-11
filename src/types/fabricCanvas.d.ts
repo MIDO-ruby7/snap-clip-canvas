@@ -2,6 +2,7 @@ export type ToolbarProps = {
   onAddText: () => void;
   onAddMosaic: () => void;
   onAddShape: (shape: 'rectangle' | 'circle') => void;
+  onSave: () => void;
 }
 
 export type FabricProps = {
@@ -9,4 +10,5 @@ export type FabricProps = {
   addTextRef: MutableRefObject<() => void>;
   addMosaicRef: MutableRefObject<() => void>;
   addShapeRef: MutableRefObject<() => void>;
+  saveRef: MutableRefObject<() => void>;
 };
