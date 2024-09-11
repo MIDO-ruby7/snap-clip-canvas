@@ -1,7 +1,7 @@
 export type ToolbarProps = {
   onAddText: () => void;
   onAddMosaic: () => void;
-  onAddShape: (shape: 'rectangle' | 'circle') => void;
+  onAddShape: (shape: 'rectangle' | 'ellipse') => void;
   onSave: () => void;
 }
 

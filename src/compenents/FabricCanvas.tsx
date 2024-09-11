@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Canvas, FabricImage, Textbox, Rect, Pattern, Circle } from 'fabric';
+import { Canvas, FabricImage, Textbox, Rect, Pattern, Ellipse } from 'fabric';
 import type { FabricProps } from '../types/fabricCanvas';
 import mosaicPatternImg from '../assets/mosaicPattern.png';
 
@@ -106,7 +106,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef,
   }
 
   // 図形
-  addShapeRef.current = (shape: 'rectangle' | 'circle') => {
+  addShapeRef.current = (shape: 'rectangle' | 'ellipse') => {
     let shapeObj;
     if (shape === 'rectangle') {
       shapeObj = new Rect({
@@ -118,12 +118,15 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef,
         stroke: 'red',
         strokeWidth: 2,
       });
-    } else if (shape === 'circle') {
-      shapeObj = new Circle({
+    } else if (shape === 'ellipse') {
+      shapeObj = new Ellipse({
         left: 150,
         top: 150,
-        radius: 50,
-        fill: 'green'
+        rx: 100,
+        ry: 30,
+        fill: 'transparent',
+        stroke: 'red',
+        strokeWidth: 2,
       });
     }
 

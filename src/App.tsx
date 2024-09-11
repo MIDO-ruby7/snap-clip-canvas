@@ -8,7 +8,7 @@ function App() {
   const [imageData, setImageData] = useState<string | null>(null);
   const addTextRef = useRef<(() => void) | null>(null);
   const addMosaicRef = useRef<(() => void) | null>(null);
-  const addShapeRef = useRef<((shape: 'rectangle' | 'circle') => void) | null>(null);
+  const addShapeRef = useRef<((shape: 'rectangle' | 'ellipse') => void) | null>(null);
   const saveRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function App() {
   const handleAddMosaic = () => {
     addMosaicRef.current?.();
   }
-  const handleAddShape = (shape: 'rectangle' | 'circle') => {
+  const handleAddShape = (shape: 'rectangle' | 'ellipse') => {
     addShapeRef.current?.(shape);
   }
   const handleSave = () => {
