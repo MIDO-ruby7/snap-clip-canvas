@@ -12,7 +12,9 @@
   "dependencies": {
     "fabric": "^6.4.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "3.0.0-beta.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
