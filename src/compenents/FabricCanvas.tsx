@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { Canvas, FabricImage, Textbox, Rect, Pattern, Ellipse } from 'fabric';
+import { Canvas, FabricImage, Textbox, Rect, Pattern, Ellipse, Line } from 'fabric';
 import type { FabricProps } from '../types/fabricCanvas';
 import mosaicPatternImg from '../assets/mosaicPattern.png';
 
-export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef, saveRef, fontWeightRef }: FabricProps) => {
+export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, addShapeRef, saveRef, fontWeightRef }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -67,6 +67,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef,
     };
   }, [imageData]);
 
+  // Bold
   fontWeightRef.current = () => {
     const activeObject = canvasRef.current?.getActiveObject();
 
@@ -90,6 +91,16 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef,
 
     canvasRef.current?.add(textbox);
     canvasRef.current?.setActiveObject(textbox);
+    canvasRef.current?.renderAll();
+  }
+
+  addLineRef.current = () => {
+    const line = new Line([40, 120, 200, 120], {
+      stroke: 'red',
+      strokeWidth: 2,
+    });
+
+    canvasRef.current?.add(line);
     canvasRef.current?.renderAll();
   }
 
