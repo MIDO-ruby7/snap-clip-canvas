@@ -3,6 +3,7 @@ export type ToolbarProps = {
   onAddMosaic: () => void;
   onAddShape: (shape: 'rectangle' | 'ellipse') => void;
   onSave: () => void;
+  onFontWeight: () => void;
 }
 
 export type FabricProps = {
@@ -11,4 +12,5 @@ export type FabricProps = {
   addMosaicRef: MutableRefObject<() => void>;
   addShapeRef: MutableRefObject<() => void>;
   saveRef: MutableRefObject<() => void>;
+  fontWeightRef: MutableRefObject<() => void>;
 };

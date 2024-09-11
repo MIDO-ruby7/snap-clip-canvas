@@ -3,7 +3,7 @@ import { Canvas, FabricImage, Textbox, Rect, Pattern, Ellipse } from 'fabric';
 import type { FabricProps } from '../types/fabricCanvas';
 import mosaicPatternImg from '../assets/mosaicPattern.png';
 
-export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef, saveRef }: FabricProps) => {
+export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef, saveRef, fontWeightRef }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -67,6 +67,16 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef,
     };
   }, [imageData]);
 
+  fontWeightRef.current = () => {
+    const activeObject = canvasRef.current?.getActiveObject();
+
+    if (activeObject && activeObject instanceof Textbox) {
+      const currentWeight = activeObject.fontWeight;
+      activeObject.set({ fontWeight: currentWeight === 'bold' ? 'normal' : 'bold' });
+      canvasRef.current?.renderAll();
+    }
+  };
+
   // TextBox
   addTextRef.current = () => {
     const textbox = new Textbox('Enter text here', {
@@ -75,6 +85,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addMosaicRef, addShapeRef,
       width: 200,
       fontSize: 20,
       fill: '#000000',
+      fontWeight: 'normal',
     });
 
     canvasRef.current?.add(textbox);
