@@ -4,8 +4,9 @@ import textIcon from '../assets/text-icon.svg'
 import rectangleIcon from '../assets/rectangle.svg'
 import line from '../assets/pen_size_2.svg'
 import arrow from '../assets/east.svg'
+import texture from '../assets/texture.svg'
 
-const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape, onSave, onFontWeight, onAddLine, onAddArrow }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape, onAddImage, onSave, onFontWeight, onAddLine, onAddArrow }) => {
   const tools = [
     { content: 'テキストボックス', onClick: onAddText, icon: <img src={textIcon}  alt="Text Icon" /> },
     { content: '太字にする', onClick: onFontWeight, icon: <Icon name='bold' /> },
@@ -14,6 +15,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape, o
     { content: 'モザイク', onClick: onAddMosaic, icon: <Icon name='chess board' /> },
     { content: '四角', onClick: () => onAddShape('rectangle'), icon: <img src={rectangleIcon}  alt="Rectangle Icon" /> },
     { content: '丸', onClick: () => onAddShape('ellipse'), icon: <Icon name='circle outline' /> },
+    { content: '効果線', onClick: onAddImage, icon: <img src={texture}  alt="Texture" /> },
   ];
 
   return (
@@ -24,7 +26,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape, o
           <Popup key={index} content={tool.content} trigger={<Button onClick={tool.onClick}>{tool.icon}</Button>} />
         ))}
       </ButtonGroup>
-        <Popup content='PNG形式で保存' trigger={<Button color='teal' style={{ marginLeft: '3em' }} onClick={onSave}>Save</Button>} />
+        <Popup content='PNG形式で保存' trigger={<Button color='teal' style={{ marginLeft: '3em' }} onClick={onSave}><Icon name='download' />Save</Button>} />
       </Grid.Column>
     </Grid>
   )

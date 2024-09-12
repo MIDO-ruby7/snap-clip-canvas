@@ -11,6 +11,7 @@ function App() {
   const addArrowRef = useRef<(() => void) | null>(null);
   const addMosaicRef = useRef<(() => void) | null>(null);
   const addShapeRef = useRef<((shape: 'rectangle' | 'ellipse') => void) | null>(null);
+  const addImageRef = useRef<(() => void) | null>(null);
   const saveRef = useRef<(() => void) | null>(null);
   const fontWeightRef = useRef<(() => void) | null>(null);
 
@@ -47,6 +48,9 @@ function App() {
   const handleAddShape = (shape: 'rectangle' | 'ellipse') => {
     addShapeRef.current?.(shape);
   }
+  const handleAddImage = () => {
+    addImageRef.current?.();
+  }
   const handleSave = () => {
     saveRef.current?.();
   }
@@ -63,6 +67,7 @@ function App() {
           onAddArrow={handleAddArrow}
           onAddMosaic={handleAddMosaic}
           onAddShape={handleAddShape}
+          onAddImage={handleAddImage}
           onSave={handleSave}
         />
       <div className="canvas">
@@ -74,6 +79,7 @@ function App() {
           fontWeightRef={fontWeightRef}
           addMosaicRef={addMosaicRef}
           addShapeRef = {addShapeRef}
+          addImageRef={addImageRef}
           saveRef={saveRef}
         />
       </div>

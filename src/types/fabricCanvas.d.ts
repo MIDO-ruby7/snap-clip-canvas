@@ -4,6 +4,7 @@ export type ToolbarProps = {
   onAddArrow: () => void;
   onAddMosaic: () => void;
   onAddShape: (shape: 'rectangle' | 'ellipse') => void;
+  onAddImage: () => void;
   onSave: () => void;
   onFontWeight: () => void;
 }
@@ -17,4 +18,5 @@ export type FabricProps = {
   addShapeRef: MutableRefObject<((shape: 'rectangle' | 'ellipse') => void) | null>;
   saveRef: MutableRefObject<(() => void) | null>;
   fontWeightRef: MutableRefObject<(() => void) | null>;
+  addImageRef: MutableRefObject<() => void>;
 };
