@@ -3,8 +3,9 @@ import { Canvas, FabricImage, Textbox, Rect, Pattern, Ellipse, Line, loadSVGFrom
 import type { FabricProps } from '../types/fabricCanvas';
 import mosaicPatternImg from '../assets/mosaicPattern.png';
 import arrow from '../assets/east.svg'
+import koukasen from '../assets/bg_koukasen_nobg1.png';
 
-export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addArrowRef, addMosaicRef, addShapeRef, saveRef, fontWeightRef }: FabricProps) => {
+export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, addShapeRef,  addArrowRef, addImageRef, saveRef, fontWeightRef }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -178,6 +179,18 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addArrowRef, a
       canvasRef.current?.add(shapeObj);
       canvasRef.current?.renderAll();
     }
+  }
+
+  // 画像
+  addImageRef.current = async () => {
+    const image = await FabricImage.fromURL(koukasen)
+    image.set({
+      scaleY:0.5, scaleX:0.5,
+      top:50, left: 400,
+      cropX:10, cropY:10
+    })
+    canvasRef.current?.add(image);
+    canvasRef.current?.renderAll();
   }
 
   // オブジェクトの削除
