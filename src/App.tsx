@@ -6,6 +6,7 @@ import defaultImage from './assets/no_image.png';
 
 function App() {
   const [imageData, setImageData] = useState<string | null>(null);
+  const [number, setNumber] = useState<number>(1);
   const addTextRef = useRef<(() => void) | null>(null);
   const addLineRef = useRef<(() => void) | null>(null);
   const addArrowRef = useRef<(() => void) | null>(null);
@@ -14,6 +15,7 @@ function App() {
   const addImageRef = useRef<(() => void) | null>(null);
   const saveRef = useRef<(() => void) | null>(null);
   const fontWeightRef = useRef<(() => void) | null>(null);
+  const addNumberRef = useRef<((num: number) => void) | null>(null);
 
   useEffect(() => {
     const handleMessage =  (event: MessageEvent) => {
@@ -30,6 +32,7 @@ function App() {
     return () => {
       // クリーンアップ
       window.removeEventListener('message', handleMessage);
+      setNumber(1);
     }
   }, []);
 
@@ -57,6 +60,12 @@ function App() {
   const handleFontWeight = () => {
     fontWeightRef.current?.();
   }
+  const handleAddNumber = () => {
+    if (addNumberRef.current) {
+      addNumberRef.current(number);
+      setNumber(number + 1);
+    }
+  }
 
   return (
     <>
@@ -69,6 +78,7 @@ function App() {
           onAddShape={handleAddShape}
           onAddImage={handleAddImage}
           onSave={handleSave}
+          onAddNumber={handleAddNumber}
         />
       <div className="canvas">
         <FabricCanvas
@@ -81,6 +91,7 @@ function App() {
           addShapeRef = {addShapeRef}
           addImageRef={addImageRef}
           saveRef={saveRef}
+          addNumberRef={addNumberRef}
         />
       </div>
     </>

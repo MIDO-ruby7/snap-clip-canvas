@@ -7,6 +7,7 @@ export type ToolbarProps = {
   onAddImage: () => void;
   onSave: () => void;
   onFontWeight: () => void;
+  onAddNumber: () => void;
 }
 
 export type FabricProps = {
@@ -19,4 +20,5 @@ export type FabricProps = {
   saveRef: MutableRefObject<(() => void) | null>;
   fontWeightRef: MutableRefObject<(() => void) | null>;
   addImageRef: MutableRefObject<() => void>;
+  addNumberRef: MutableRefObject<(numTostring: string) => void>;
 };

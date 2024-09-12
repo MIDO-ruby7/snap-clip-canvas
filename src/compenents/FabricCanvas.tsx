@@ -5,7 +5,8 @@ import mosaicPatternImg from '../assets/mosaicPattern.png';
 import arrow from '../assets/east.svg'
 import koukasen from '../assets/bg_koukasen_nobg1.png';
 
-export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, addShapeRef,  addArrowRef, addImageRef, saveRef, fontWeightRef }: FabricProps) => {
+
+export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, addShapeRef,  addArrowRef, addImageRef, saveRef, fontWeightRef, addNumberRef }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -93,6 +94,8 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
 
     canvasRef.current?.add(textbox);
     canvasRef.current?.setActiveObject(textbox);
+    textbox.enterEditing(); // テキストボックスを編集モードにする
+    textbox.selectAll(); // すべてのテキストを選択する
     canvasRef.current?.renderAll();
   }
 
@@ -190,6 +193,24 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
       cropX:10, cropY:10
     })
     canvasRef.current?.add(image);
+    canvasRef.current?.renderAll();
+  }
+  // 数字
+  addNumberRef.current = (num: number) => {
+    const textbox = new Textbox(num.toString(), {
+      left: 100,
+      top: 100,
+      width: 30,
+      fontSize: 28,
+      fill: 'red',
+      fontWeight: 'bold',
+      fontFamily: 'Noto Sans'
+    });
+
+    canvasRef.current?.add(textbox);
+    canvasRef.current?.setActiveObject(textbox);
+    textbox.enterEditing(); // テキストボックスを編集モードにする
+    textbox.selectAll(); // すべてのテキストを選択する
     canvasRef.current?.renderAll();
   }
 
