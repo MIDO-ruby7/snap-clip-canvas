@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
-import { Canvas, FabricImage, Textbox, Rect, Pattern, Ellipse, Line } from 'fabric';
+import { Canvas, FabricImage, Textbox, Rect, Pattern, Ellipse, Line, loadSVGFromURL, Path} from 'fabric';
 import type { FabricProps } from '../types/fabricCanvas';
 import mosaicPatternImg from '../assets/mosaicPattern.png';
+import arrow from '../assets/east.svg'
 
-export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, addShapeRef, saveRef, fontWeightRef }: FabricProps) => {
+export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addArrowRef, addMosaicRef, addShapeRef, saveRef, fontWeightRef }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -94,6 +95,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
     canvasRef.current?.renderAll();
   }
 
+  // 線
   addLineRef.current = () => {
     const line = new Line([40, 120, 200, 120], {
       stroke: 'red',
@@ -103,6 +105,26 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
     canvasRef.current?.add(line);
     canvasRef.current?.renderAll();
   }
+
+  // 矢印
+  addArrowRef.current = async() => {
+    loadSVGFromURL(arrow , (objects) => {
+      const pathData = objects.getAttribute('d');
+      if (pathData) {
+        const svgPath = new Path(pathData, {
+          left: 100,
+          top: 100,
+          angle: 0,
+          fill: '#ff5555',
+          scaleX: 0.05,
+          scaleY: 0.05
+        });
+
+        canvasRef.current?.add(svgPath);
+      }
+      canvasRef.current?.renderAll();
+    })
+  };
 
   // モザイク
   addMosaicRef.current = async () => {
