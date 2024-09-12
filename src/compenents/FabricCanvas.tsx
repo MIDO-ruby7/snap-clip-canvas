@@ -1,12 +1,32 @@
-import { useEffect, useRef } from 'react';
-import { Canvas, FabricImage, Textbox, Rect, Pattern, Ellipse, Line, loadSVGFromURL, Path} from 'fabric';
-import type { FabricProps } from '../types/fabricCanvas';
-import mosaicPatternImg from '../assets/mosaicPattern.png';
-import arrow from '../assets/east.svg'
-import koukasen from '../assets/bg_koukasen_nobg1.png';
+import { useEffect, useRef } from "react";
+import {
+  Canvas,
+  FabricImage,
+  Textbox,
+  Rect,
+  Pattern,
+  Ellipse,
+  Line,
+  loadSVGFromURL,
+  Path,
+} from "fabric";
+import type { FabricProps } from "../types/fabricCanvas";
+import mosaicPatternImg from "../assets/mosaicPattern.png";
+import arrow from "../assets/east.svg";
+import koukasen from "../assets/bg_koukasen_nobg1.png";
 
-
-export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, addShapeRef,  addArrowRef, addImageRef, saveRef, fontWeightRef, addNumberRef }: FabricProps) => {
+export const FabricCanvas = ({
+  imageData,
+  addTextRef,
+  addLineRef,
+  addMosaicRef,
+  addShapeRef,
+  addArrowRef,
+  addImageRef,
+  saveRef,
+  fontWeightRef,
+  addNumberRef,
+}: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
 
@@ -23,13 +43,13 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
       height: maxCanvasHeight,
       selection: false, // 選択の無効化
       preserveObjectStacking: true, // オブジェクト選択時に自動的に最前面に移動しないようにする
-    }
+    };
     const canvas = new Canvas(canvasEl.current, options);
     canvasRef.current = canvas;
 
     const loadImage = async () => {
       try {
-        const img = await FabricImage.fromURL(imageData)
+        const img = await FabricImage.fromURL(imageData);
         const imgWidth = img.width || 0;
         const imgHeight = img.height || 0;
         img.selectable = false; // 選択を無効化
@@ -53,14 +73,14 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
           canvasRef.current.setDimensions({
             width: newCanvasWidth,
             height: newCanvasHeight,
-          })
+          });
         }
 
         canvas.add(img); // 画像をキャンバスに追加
         canvas.renderAll(); // キャンバスを再描画
-      } catch(error) {
-        console.error('Error loading image:', error);
-      };
+      } catch (error) {
+        console.error("Error loading image:", error);
+      }
     };
 
     loadImage();
@@ -76,20 +96,22 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
 
     if (activeObject && activeObject instanceof Textbox) {
       const currentWeight = activeObject.fontWeight;
-      activeObject.set({ fontWeight: currentWeight === 'bold' ? 'normal' : 'bold' });
+      activeObject.set({
+        fontWeight: currentWeight === "bold" ? "normal" : "bold",
+      });
       canvasRef.current?.renderAll();
     }
   };
 
   // TextBox
   addTextRef.current = () => {
-    const textbox = new Textbox('Enter text here', {
+    const textbox = new Textbox("Enter text here", {
       left: 100,
       top: 100,
       width: 200,
       fontSize: 20,
-      fill: '#000000',
-      fontWeight: 'normal',
+      fill: "#000000",
+      fontWeight: "normal",
     });
 
     canvasRef.current?.add(textbox);
@@ -97,46 +119,46 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
     textbox.enterEditing(); // テキストボックスを編集モードにする
     textbox.selectAll(); // すべてのテキストを選択する
     canvasRef.current?.renderAll();
-  }
+  };
 
   // 線
   addLineRef.current = () => {
     const line = new Line([40, 120, 200, 120], {
-      stroke: 'red',
+      stroke: "red",
       strokeWidth: 2,
     });
 
     canvasRef.current?.add(line);
     canvasRef.current?.renderAll();
-  }
+  };
 
   // 矢印
-  addArrowRef.current = async() => {
-    loadSVGFromURL(arrow , (objects) => {
-      const pathData = objects.getAttribute('d');
+  addArrowRef.current = async () => {
+    loadSVGFromURL(arrow, (objects) => {
+      const pathData = objects.getAttribute("d");
       if (pathData) {
         const svgPath = new Path(pathData, {
           left: 100,
           top: 100,
           angle: 0,
-          fill: '#ff5555',
+          fill: "#ff5555",
           scaleX: 0.05,
-          scaleY: 0.05
+          scaleY: 0.05,
         });
 
         canvasRef.current?.add(svgPath);
       }
       canvasRef.current?.renderAll();
-    })
+    });
   };
 
   // モザイク
   addMosaicRef.current = async () => {
     try {
-      const img = await FabricImage.fromURL(mosaicPatternImg)
+      const img = await FabricImage.fromURL(mosaicPatternImg);
       const pattern = new Pattern({
         source: img._element,
-        repeat: 'repeat',
+        repeat: "repeat",
       });
 
       const mosaicPattern = new Rect({
@@ -144,36 +166,36 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
         top: 100,
         width: 200,
         height: 40,
-        fill: pattern
+        fill: pattern,
       });
       canvasRef.current?.add(mosaicPattern);
       canvasRef.current?.renderAll();
-    } catch(error) {
-      console.error('Error loading mosaic pattern image:', error);
-    };
-  }
+    } catch (error) {
+      console.error("Error loading mosaic pattern image:", error);
+    }
+  };
 
   // 図形
-  addShapeRef.current = (shape: 'rectangle' | 'ellipse') => {
+  addShapeRef.current = (shape: "rectangle" | "ellipse") => {
     let shapeObj;
-    if (shape === 'rectangle') {
+    if (shape === "rectangle") {
       shapeObj = new Rect({
         left: 100,
         top: 100,
         width: 200,
         height: 40,
-        fill: 'transparent',
-        stroke: 'red',
+        fill: "transparent",
+        stroke: "red",
         strokeWidth: 2,
       });
-    } else if (shape === 'ellipse') {
+    } else if (shape === "ellipse") {
       shapeObj = new Ellipse({
         left: 150,
         top: 150,
         rx: 100,
         ry: 30,
-        fill: 'transparent',
-        stroke: 'red',
+        fill: "transparent",
+        stroke: "red",
         strokeWidth: 2,
       });
     }
@@ -182,19 +204,22 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
       canvasRef.current?.add(shapeObj);
       canvasRef.current?.renderAll();
     }
-  }
+  };
 
   // 画像
   addImageRef.current = async () => {
-    const image = await FabricImage.fromURL(koukasen)
+    const image = await FabricImage.fromURL(koukasen);
     image.set({
-      scaleY:0.5, scaleX:0.5,
-      top:50, left: 400,
-      cropX:10, cropY:10
-    })
+      scaleY: 0.5,
+      scaleX: 0.5,
+      top: 50,
+      left: 400,
+      cropX: 10,
+      cropY: 10,
+    });
     canvasRef.current?.add(image);
     canvasRef.current?.renderAll();
-  }
+  };
   // 数字
   addNumberRef.current = (num: number) => {
     const textbox = new Textbox(num.toString(), {
@@ -202,9 +227,9 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
       top: 100,
       width: 30,
       fontSize: 28,
-      fill: 'red',
-      fontWeight: 'bold',
-      fontFamily: 'Noto Sans'
+      fill: "red",
+      fontWeight: "bold",
+      fontFamily: "Noto Sans",
     });
 
     canvasRef.current?.add(textbox);
@@ -212,7 +237,7 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
     textbox.enterEditing(); // テキストボックスを編集モードにする
     textbox.selectAll(); // すべてのテキストを選択する
     canvasRef.current?.renderAll();
-  }
+  };
 
   // オブジェクトの削除
   useEffect(() => {
@@ -240,21 +265,21 @@ export const FabricCanvas = ({ imageData, addTextRef, addLineRef, addMosaicRef, 
     return () => {
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [])
+  }, []);
 
   // 保存
   saveRef.current = () => {
     if (!canvasRef.current) return;
 
     const dataURL = canvasRef.current.toDataURL({
-      format: 'png',
+      format: "png",
       quality: 1.0,
-      multiplier: 1.0
+      multiplier: 1.0,
     });
 
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = dataURL;
-    link.download = 'canvas-image.png';
+    link.download = "canvas-image.png";
     link.click();
   };
 
