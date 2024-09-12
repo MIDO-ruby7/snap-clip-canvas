@@ -3,11 +3,12 @@ export type ToolbarProps = {
   onAddLine: () => void;
   onAddArrow: () => void;
   onAddMosaic: () => void;
-  onAddShape: (shape: 'rectangle' | 'ellipse') => void;
+  onAddShape: (shape: "rectangle" | "ellipse") => void;
   onAddImage: () => void;
   onSave: () => void;
   onFontWeight: () => void;
-}
+  onAddNumber: () => void;
+};
 
 export type FabricProps = {
   imageData: string;
@@ -15,8 +16,11 @@ export type FabricProps = {
   addLineRef: MutableRefObject<(() => void) | null>;
   addArrowRef: MutableRefObject<(() => void) | null>;
   addMosaicRef: MutableRefObject<(() => void) | null>;
-  addShapeRef: MutableRefObject<((shape: 'rectangle' | 'ellipse') => void) | null>;
+  addShapeRef: MutableRefObject<
+    ((shape: "rectangle" | "ellipse") => void) | null
+  >;
   saveRef: MutableRefObject<(() => void) | null>;
   fontWeightRef: MutableRefObject<(() => void) | null>;
   addImageRef: MutableRefObject<() => void>;
+  addNumberRef: MutableRefObject<(numTostring: string) => void>;
 };
