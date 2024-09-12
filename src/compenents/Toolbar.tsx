@@ -3,12 +3,14 @@ import { ButtonGroup, Button, Icon, Grid, Popup } from 'semantic-ui-react'
 import textIcon from '../assets/text-icon.svg'
 import rectangleIcon from '../assets/rectangle.svg'
 import line from '../assets/pen_size_2.svg'
+import arrow from '../assets/east.svg'
 
-const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape, onSave, onFontWeight, onAddLine }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ onAddText, onAddMosaic, onAddShape, onSave, onFontWeight, onAddLine, onAddArrow }) => {
   const tools = [
     { content: 'テキストボックス', onClick: onAddText, icon: <img src={textIcon}  alt="Text Icon" /> },
     { content: '太字にする', onClick: onFontWeight, icon: <Icon name='bold' /> },
     { content: '線', onClick: onAddLine, icon: <img src={line}  alt="Line" /> },
+    { content: '矢印', onClick: onAddArrow, icon: <img src={arrow}  alt="Arrow" /> },
     { content: 'モザイク', onClick: onAddMosaic, icon: <Icon name='chess board' /> },
     { content: '四角', onClick: () => onAddShape('rectangle'), icon: <img src={rectangleIcon}  alt="Rectangle Icon" /> },
     { content: '丸', onClick: () => onAddShape('ellipse'), icon: <Icon name='circle outline' /> },
