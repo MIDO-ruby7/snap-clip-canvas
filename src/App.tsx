@@ -116,13 +116,14 @@ function App() {
 
   return (
     <>
-      <div className="app-container">
-        <div className="sidebar">
-          <div className="color_picker">
-            <CompactPicker color={color} onChangeComplete={handleColorChange} />
+      <div className="flex justify-center h-full w-full relative items-center">
+        <div className="flex flex-col w-80 bg-stone-100 p-5 absolute inset-y-0 right-0">
+          <div className="mt-10">
+            <CompactPicker color={color}
+            onChangeComplete={handleColorChange} />
           </div>
-          <div className="toolbar">
-          <Toolbar tools={tools} />
+          <div className="toolbar my-5">
+            <Toolbar tools={tools}/>
           </div>
           <div className="save-button ml-4">
             <button
