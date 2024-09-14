@@ -1,13 +1,11 @@
+export type Tool = {
+  content: string;
+  onClick: (() => void) | undefined;
+  icon: JSX.Element;
+};
+
 export type ToolbarProps = {
-  onAddText: () => void;
-  onAddLine: () => void;
-  onAddArrow: () => void;
-  onAddMosaic: () => void;
-  onAddShape: (shape: "rectangle" | "ellipse") => void;
-  onAddImage: () => void;
-  onSave: () => void;
-  onFontWeight: () => void;
-  onAddNumber: () => void;
+  tools: Tool[];
 };
 
 export type FabricProps = {
@@ -22,5 +20,6 @@ export type FabricProps = {
   saveRef: MutableRefObject<(() => void) | null>;
   fontWeightRef: MutableRefObject<(() => void) | null>;
   addImageRef: MutableRefObject<() => void>;
-  addNumberRef: MutableRefObject<(numTostring: string) => void>;
+  addNumberRef: MutableRefObject<(numTostring: number) => void>;
+  setColorRef: MutableRefObject<(color: string) => void>;
 };

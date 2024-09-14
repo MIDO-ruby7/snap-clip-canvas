@@ -26,6 +26,7 @@ export const FabricCanvas = ({
   saveRef,
   fontWeightRef,
   addNumberRef,
+  setColorRef,
 }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
@@ -282,6 +283,22 @@ export const FabricCanvas = ({
     link.download = "canvas-image.png";
     link.click();
   };
+
+  // 色
+  const applyColorToActiveObject = (color: string) => {
+    const activeObject = canvasRef.current?.getActiveObject();
+
+    if (activeObject) {
+      if (activeObject.type === "textbox" || activeObject.type === "path") {
+        activeObject.set("fill", color); // TextやTextboxの場合はfillを設定
+      } else {
+        activeObject.set("stroke", color); // それ以外のオブジェクトにはstrokeを設定
+      }
+
+      canvasRef.current?.renderAll();
+    }
+  };
+  setColorRef.current = applyColorToActiveObject;
 
   return <canvas ref={canvasEl} />;
 };
