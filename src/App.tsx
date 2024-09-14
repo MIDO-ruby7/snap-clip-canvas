@@ -19,7 +19,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 function App() {
   const [imageData, setImageData] = useState<string | null>(null);
   const [number, setNumber] = useState<number>(1);
-  // const [color, setColor] = useState<string>('#000000');
+  const [color, setColor] = useState<string>('#000000');
   const addTextRef = useRef<(() => void) | null>(null);
   const addLineRef = useRef<(() => void) | null>(null);
   const addArrowRef = useRef<(() => void) | null>(null);
@@ -58,13 +58,13 @@ function App() {
       setNumber(number + 1);
     }
   };
-  // const handleColorChange = (color: any) => {
-  //   const selectedColor = color.hex;
-  //   setColor(selectedColor);
-  //   if (setColorRef.current) {
-  //     setColorRef.current(selectedColor);
-  //   }
-  // };
+  const handleColorChange = (color: any) => {
+    const selectedColor = color.hex;
+    setColor(selectedColor);
+    if (setColorRef.current) {
+      setColorRef.current(selectedColor);
+    }
+  };
 
   const tools: Tool[] = [
     {
@@ -119,7 +119,7 @@ function App() {
       <div className="app-container">
         <div className="sidebar">
           <div className="color_picker">
-            <CompactPicker />
+            <CompactPicker color={color} onChangeComplete={handleColorChange} />
           </div>
           <div className="toolbar">
           <Toolbar tools={tools} />
