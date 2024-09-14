@@ -15,11 +15,14 @@ import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 import FilterFramesIcon from "@mui/icons-material/FilterFrames";
 import PinIcon from "@mui/icons-material/Pin";
 import DownloadIcon from "@mui/icons-material/Download";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 function App() {
   const [imageData, setImageData] = useState<string | null>(null);
   const [number, setNumber] = useState<number>(1);
   const [color, setColor] = useState<string>("#000000");
+  const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
   const addTextRef = useRef<(() => void) | null>(null);
   const addLineRef = useRef<(() => void) | null>(null);
   const addArrowRef = useRef<(() => void) | null>(null);
@@ -114,41 +117,55 @@ function App() {
     },
   ];
 
+  const toggleMenu = () => {
+    setIsMenuVisible(!isMenuVisible);
+  };
+
   return (
     <>
-      <div className="flex justify-center h-full w-full relative items-center">
-        <div className="flex flex-col w-80 bg-stone-100 p-5 absolute inset-y-0 right-0">
-          <div className="mt-10">
-            <CompactPicker color={color} onChangeComplete={handleColorChange} />
+      <div className="flex h-full w-full relative">
+        <div className="collapse absolute inset-y-0 right-0 z-10 w-80">
+          <input type="checkbox" onClick={toggleMenu}/>
+          <div className="collapse-title text-sm text-pink-200 cursor-pointer">
+            {isMenuVisible ? 'Hide' : 'Show'} Menu {isMenuVisible ? <HighlightOffIcon /> : <AddCircleOutlineIcon />}
           </div>
-          <div className="toolbar my-5">
-            <Toolbar tools={tools} />
-          </div>
-          <div className="save-button ml-4">
-            <button
-              className="tooltip btn btn-wide bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
-              onClick={() => saveRef.current?.()}
-              data-tip="PNG形式で保存"
-            >
-              Download
-              <DownloadIcon />
-            </button>
-          </div>
+            <div className="collapse-content">
+              <div className="flex flex-col w-80 bg-stone-100 p-3">
+                <div className="mt-10">
+                  <CompactPicker color={color} onChangeComplete={handleColorChange} />
+                </div>
+                <div className="toolbar my-5">
+                  <Toolbar tools={tools} />
+                </div>
+                <div className="save-button ml-4">
+                  <button
+                    className="tooltip btn btn-wide bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
+                    onClick={() => saveRef.current?.()}
+                    data-tip="PNG形式で保存"
+                  >
+                    Download
+                    <DownloadIcon />
+                  </button>
+                </div>
+              </div>
+            </div>
         </div>
-        <div className="canvas">
-          <FabricCanvas
-            imageData={imageData || defaultImage}
-            addTextRef={addTextRef}
-            addLineRef={addLineRef}
-            addArrowRef={addArrowRef}
-            fontWeightRef={fontWeightRef}
-            addMosaicRef={addMosaicRef}
-            addShapeRef={addShapeRef}
-            addImageRef={addImageRef}
-            saveRef={saveRef}
-            addNumberRef={addNumberRef}
-            setColorRef={setColorRef}
-          />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="overflow-x-auto">
+            <FabricCanvas
+              imageData={imageData || defaultImage}
+              addTextRef={addTextRef}
+              addLineRef={addLineRef}
+              addArrowRef={addArrowRef}
+              fontWeightRef={fontWeightRef}
+              addMosaicRef={addMosaicRef}
+              addShapeRef={addShapeRef}
+              addImageRef={addImageRef}
+              saveRef={saveRef}
+              addNumberRef={addNumberRef}
+              setColorRef={setColorRef}
+            />
+          </div>
         </div>
       </div>
     </>
