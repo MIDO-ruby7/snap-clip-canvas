@@ -6,7 +6,7 @@ export type Tool = {
 
 export type ToolbarProps = {
   tools: Tool[];
-}
+};
 
 export type FabricProps = {
   imageData: string;

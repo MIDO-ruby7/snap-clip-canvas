@@ -289,8 +289,8 @@ export const FabricCanvas = ({
     const activeObject = canvasRef.current?.getActiveObject();
 
     if (activeObject) {
-      if (activeObject.type === 'textbox' || activeObject.type === 'path') {
-        activeObject.set("fill", color);  // TextやTextboxの場合はfillを設定
+      if (activeObject.type === "textbox" || activeObject.type === "path") {
+        activeObject.set("fill", color); // TextやTextboxの場合はfillを設定
       } else {
         activeObject.set("stroke", color); // それ以外のオブジェクトにはstrokeを設定
       }

@@ -3,23 +3,23 @@ import "./App.css";
 import Toolbar from "./compenents/Toolbar";
 import { useState, useEffect, useRef } from "react";
 import defaultImage from "./assets/no_image.png";
-import { CompactPicker } from 'react-color';
-import type { Tool } from "./types/fabricCanvas"
-import TextFieldsIcon from '@mui/icons-material/TextFields';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
-import EastIcon from '@mui/icons-material/East';
-import BlurOnIcon from '@mui/icons-material/BlurOn';
-import Crop32Icon from '@mui/icons-material/Crop32';
-import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
-import FilterFramesIcon from '@mui/icons-material/FilterFrames';
-import PinIcon from '@mui/icons-material/Pin';
-import DownloadIcon from '@mui/icons-material/Download';
+import { CompactPicker } from "react-color";
+import type { Tool } from "./types/fabricCanvas";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
+import EastIcon from "@mui/icons-material/East";
+import BlurOnIcon from "@mui/icons-material/BlurOn";
+import Crop32Icon from "@mui/icons-material/Crop32";
+import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
+import FilterFramesIcon from "@mui/icons-material/FilterFrames";
+import PinIcon from "@mui/icons-material/Pin";
+import DownloadIcon from "@mui/icons-material/Download";
 
 function App() {
   const [imageData, setImageData] = useState<string | null>(null);
   const [number, setNumber] = useState<number>(1);
-  const [color, setColor] = useState<string>('#000000');
+  const [color, setColor] = useState<string>("#000000");
   const addTextRef = useRef<(() => void) | null>(null);
   const addLineRef = useRef<(() => void) | null>(null);
   const addArrowRef = useRef<(() => void) | null>(null);
@@ -119,11 +119,10 @@ function App() {
       <div className="flex justify-center h-full w-full relative items-center">
         <div className="flex flex-col w-80 bg-stone-100 p-5 absolute inset-y-0 right-0">
           <div className="mt-10">
-            <CompactPicker color={color}
-            onChangeComplete={handleColorChange} />
+            <CompactPicker color={color} onChangeComplete={handleColorChange} />
           </div>
           <div className="toolbar my-5">
-            <Toolbar tools={tools}/>
+            <Toolbar tools={tools} />
           </div>
           <div className="save-button ml-4">
             <button
@@ -131,7 +130,8 @@ function App() {
               onClick={() => saveRef.current?.()}
               data-tip="PNG形式で保存"
             >
-              Download<DownloadIcon />
+              Download
+              <DownloadIcon />
             </button>
           </div>
         </div>
@@ -155,4 +155,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
