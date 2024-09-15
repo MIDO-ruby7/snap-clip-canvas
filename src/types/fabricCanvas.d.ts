@@ -22,4 +22,5 @@ export type FabricProps = {
   addImageRef: MutableRefObject<() => void>;
   addNumberRef: MutableRefObject<(numTostring: number) => void>;
   setColorRef: MutableRefObject<(color: string) => void>;
+  deleteRef: MutableRefObject<(() => void) | null>;
 };
