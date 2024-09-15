@@ -27,6 +27,7 @@ export const FabricCanvas = ({
   fontWeightRef,
   addNumberRef,
   setColorRef,
+  deleteRef,
 }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
@@ -235,29 +236,29 @@ export const FabricCanvas = ({
 
     canvasRef.current?.add(textbox);
     canvasRef.current?.setActiveObject(textbox);
-    textbox.enterEditing(); // テキストボックスを編集モードにする
-    textbox.selectAll(); // すべてのテキストを選択する
     canvasRef.current?.renderAll();
   };
 
   // オブジェクトの削除
+  const handleDeleteActiveObject = () => {
+    const activeObject = canvasRef.current?.getActiveObject();
+
+    if (activeObject) {
+      if (activeObject instanceof Textbox && activeObject.isEditing) {
+        // Don't delete the Textbox if it's in edit mode
+        return;
+      }
+      canvasRef.current?.remove(activeObject);
+      canvasRef.current?.renderAll();
+    }
+  };
+
+  deleteRef.current = handleDeleteActiveObject;
+
   useEffect(() => {
     const handleKeyUp = (e: KeyboardEvent) => {
       if (canvasRef.current && (e.key === "Escape" || e.key === "Backspace")) {
-        const activeObject = canvasRef.current.getActiveObject();
-
-        if (!activeObject) return;
-
-        if (activeObject instanceof Textbox) {
-          if (!activeObject.isEditing) {
-            canvasRef.current.remove(activeObject);
-            canvasRef.current.renderAll();
-          }
-          return;
-        }
-
-        canvasRef.current.remove(activeObject);
-        canvasRef.current.renderAll();
+        handleDeleteActiveObject();
       }
     };
 

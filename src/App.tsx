@@ -17,12 +17,13 @@ import PinIcon from "@mui/icons-material/Pin";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 function App() {
   const [imageData, setImageData] = useState<string | null>(null);
   const [number, setNumber] = useState<number>(1);
   const [color, setColor] = useState<string>("#000000");
-  const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
+  const [isMenuVisible, setIsMenuVisible] = useState<boolean>(true);
   const addTextRef = useRef<(() => void) | null>(null);
   const addLineRef = useRef<(() => void) | null>(null);
   const addArrowRef = useRef<(() => void) | null>(null);
@@ -35,6 +36,7 @@ function App() {
   const fontWeightRef = useRef<(() => void) | null>(null);
   const addNumberRef = useRef<((num: number) => void) | null>(null);
   const setColorRef = useRef<((color: string) => void) | null>(null);
+  const deleteRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -115,6 +117,11 @@ function App() {
       onClick: handleAddNumber,
       icon: <PinIcon />,
     },
+    {
+      content: "削除",
+      onClick: () => deleteRef.current?.(),
+      icon: <DeleteForeverIcon />,
+    },
   ];
 
   const toggleMenu = () => {
@@ -124,10 +131,10 @@ function App() {
   return (
     <>
       <div className="flex h-full w-full relative">
-        <div className="collapse absolute inset-y-0 right-0 z-10 w-80">
-          <input type="checkbox" onClick={toggleMenu}/>
-          <div className="collapse-title text-sm text-pink-200 cursor-pointer">
-            {isMenuVisible ? 'Hide' : 'Show'} Menu {isMenuVisible ? <HighlightOffIcon /> : <AddCircleOutlineIcon />}
+        <div className="collapse absolute inset-y-0 right-0 z-10 w-80 m-3">
+          <input type="checkbox" onClick={toggleMenu} defaultChecked={true} />
+          <div className="collapse-title text-pink-200 cursor-pointer">
+            {isMenuVisible ? <HighlightOffIcon /> : <AddCircleOutlineIcon />}{isMenuVisible ? 'Hide' : 'Show'} Menu
           </div>
             <div className="collapse-content">
               <div className="flex flex-col w-80 bg-stone-100 p-3">
@@ -164,6 +171,7 @@ function App() {
               saveRef={saveRef}
               addNumberRef={addNumberRef}
               setColorRef={setColorRef}
+              deleteRef={deleteRef}
             />
           </div>
         </div>
