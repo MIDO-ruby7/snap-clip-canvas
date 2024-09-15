@@ -132,7 +132,7 @@ function App() {
     <>
       <div className="flex h-full w-full relative">
         <div className="collapse absolute inset-y-0 right-0 z-10 w-80 m-3">
-          <input type="checkbox" onClick={toggleMenu} defaultChecked={true} />
+          <input type="checkbox" onClick={toggleMenu} defaultChecked={isMenuVisible} />
           <div className="collapse-title text-pink-200 cursor-pointer">
             {isMenuVisible ? <HighlightOffIcon /> : <AddCircleOutlineIcon />}{isMenuVisible ? 'Hide' : 'Show'} Menu
           </div>
