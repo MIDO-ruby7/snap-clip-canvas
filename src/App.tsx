@@ -17,7 +17,6 @@ import PinIcon from "@mui/icons-material/Pin";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 function App() {
   const [imageData, setImageData] = useState<string | null>(null);
@@ -116,12 +115,7 @@ function App() {
       content: "数字",
       onClick: handleAddNumber,
       icon: <PinIcon />,
-    },
-    {
-      content: "削除",
-      onClick: () => deleteRef.current?.(),
-      icon: <DeleteForeverIcon />,
-    },
+    }
   ];
 
   const toggleMenu = () => {

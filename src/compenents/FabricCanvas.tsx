@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import deleteIcon from '../assets/cancel.png'
 import {
   Canvas,
   FabricImage,
@@ -9,6 +10,9 @@ import {
   Line,
   loadSVGFromURL,
   Path,
+  Control,
+  FabricObject,
+  util
 } from "fabric";
 import type { FabricProps } from "../types/fabricCanvas";
 import mosaicPatternImg from "../assets/mosaicPattern.png";
@@ -27,7 +31,6 @@ export const FabricCanvas = ({
   fontWeightRef,
   addNumberRef,
   setColorRef,
-  deleteRef,
 }: FabricProps) => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
   const canvasRef = useRef<Canvas | null>(null);
@@ -92,6 +95,38 @@ export const FabricCanvas = ({
     };
   }, [imageData]);
 
+  const applyCustomControlsToObject = (object: FabricObject) => {
+    if (!object) return;
+    object.controls.deleteControl = new Control({
+      x: 0.5,
+      y: -0.5,
+      offsetY: 16,
+      offsetX: 20,
+      cursorStyle: 'pointer',
+      render: renderIcon,
+      mouseUpHandler: handleDeleteActiveObject,
+    });
+
+    function renderIcon(
+      ctx: CanvasRenderingContext2D,
+      left: number,
+      top: number,
+      fabricObject: FabricObject
+    ) {
+      const size = 24;
+      const img = new Image();
+      img.src = deleteIcon
+
+      img.onload = () => {
+        ctx.save();
+        ctx.translate(left - size / 2, top - size / 2);
+        ctx.rotate(util.degreesToRadians(fabricObject.angle)); // オブジェクトの角度に合わせて回転
+        ctx.drawImage(img, 0, 0, size, size); // 画像を描画
+        ctx.restore();
+      };
+    }
+  };
+
   // Bold
   fontWeightRef.current = () => {
     const activeObject = canvasRef.current?.getActiveObject();
@@ -117,6 +152,7 @@ export const FabricCanvas = ({
     });
 
     canvasRef.current?.add(textbox);
+    applyCustomControlsToObject(textbox);
     canvasRef.current?.setActiveObject(textbox);
     textbox.enterEditing(); // テキストボックスを編集モードにする
     textbox.selectAll(); // すべてのテキストを選択する
@@ -131,6 +167,7 @@ export const FabricCanvas = ({
     });
 
     canvasRef.current?.add(line);
+    applyCustomControlsToObject(line);
     canvasRef.current?.renderAll();
   };
 
@@ -149,6 +186,7 @@ export const FabricCanvas = ({
         });
 
         canvasRef.current?.add(svgPath);
+        applyCustomControlsToObject(svgPath);
       }
       canvasRef.current?.renderAll();
     });
@@ -171,6 +209,7 @@ export const FabricCanvas = ({
         fill: pattern,
       });
       canvasRef.current?.add(mosaicPattern);
+      applyCustomControlsToObject(mosaicPattern);
       canvasRef.current?.renderAll();
     } catch (error) {
       console.error("Error loading mosaic pattern image:", error);
@@ -204,6 +243,7 @@ export const FabricCanvas = ({
 
     if (shapeObj) {
       canvasRef.current?.add(shapeObj);
+      applyCustomControlsToObject(shapeObj);
       canvasRef.current?.renderAll();
     }
   };
@@ -220,6 +260,7 @@ export const FabricCanvas = ({
       cropY: 10,
     });
     canvasRef.current?.add(image);
+    applyCustomControlsToObject(image);
     canvasRef.current?.renderAll();
   };
   // 数字
@@ -235,6 +276,7 @@ export const FabricCanvas = ({
     });
 
     canvasRef.current?.add(textbox);
+    applyCustomControlsToObject(textbox);
     canvasRef.current?.setActiveObject(textbox);
     canvasRef.current?.renderAll();
   };
@@ -252,8 +294,6 @@ export const FabricCanvas = ({
       canvasRef.current?.renderAll();
     }
   };
-
-  deleteRef.current = handleDeleteActiveObject;
 
   useEffect(() => {
     const handleKeyUp = (e: KeyboardEvent) => {

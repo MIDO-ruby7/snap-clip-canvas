@@ -23,4 +23,5 @@ export type FabricProps = {
   addNumberRef: MutableRefObject<(numTostring: number) => void>;
   setColorRef: MutableRefObject<(color: string) => void>;
   deleteRef: MutableRefObject<(() => void) | null>;
+  onActiveObjectChange?: (isActive: boolean) => void;
 };
