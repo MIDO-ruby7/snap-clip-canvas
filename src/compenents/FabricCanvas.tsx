@@ -13,7 +13,6 @@ import {
   Path,
   Control,
   FabricObject,
-  util
 } from "fabric";
 import type { FabricProps } from "../types/fabricCanvas";
 import mosaicPatternImg from "../assets/mosaicPattern.png";
@@ -107,7 +106,7 @@ export const FabricCanvas = ({
       offsetY: -15,
       offsetX: 20,
       cursorStyle: 'pointer',
-      render: (ctx, left, top) => renderIcon(ctx, left, top, object, deleteIcon),
+      render: (ctx, left, top) => renderIcon(ctx, left, top, deleteIcon),
       mouseUpHandler: handleDeleteActiveObject,
     });
 
@@ -118,7 +117,7 @@ export const FabricCanvas = ({
       offsetY: 20,
       offsetX: 20,
       cursorStyle: 'pointer',
-      render: (ctx, left, top) => renderIcon(ctx, left, top, object, copyIcon),
+      render: (ctx, left, top) => renderIcon(ctx, left, top, copyIcon),
       mouseUpHandler: handleCopyAndPasteActiveObject,
     });
 
@@ -126,7 +125,6 @@ export const FabricCanvas = ({
       ctx: CanvasRenderingContext2D,
       left: number,
       top: number,
-      fabricObject: FabricObject,
       iconSrc: string
     ) {
       const size = 20;
@@ -136,11 +134,6 @@ export const FabricCanvas = ({
       img.onload = () => {
         ctx.save();
         ctx.translate(left, top);
-        // 回転をオブジェクトの角度に合わせる
-        ctx.rotate(util.degreesToRadians(fabricObject.angle));
-        const scaleX = fabricObject.scaleX || 1;
-        const scaleY = fabricObject.scaleY || 1;
-        ctx.scale(scaleX, scaleY);
         ctx.drawImage(img, -size / 2, -size / 2, size, size);
         ctx.restore();
       };
@@ -209,8 +202,8 @@ export const FabricCanvas = ({
 
         canvasRef.current?.add(svgPath);
         applyCustomControlsToObject(svgPath);
+        canvasRef.current?.renderAll();
       }
-      canvasRef.current?.renderAll();
     });
   };
 
