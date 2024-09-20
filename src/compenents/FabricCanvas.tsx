@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import deleteIcon from '../assets/cancel.png'
+import copyIcon from '../assets/copy.png'
 import {
   Canvas,
   FabricImage,
@@ -95,37 +96,58 @@ export const FabricCanvas = ({
     };
   }, [imageData]);
 
+  // カスタムコントロール
   const applyCustomControlsToObject = (object: FabricObject) => {
     if (!object) return;
+
+    // Delete control
     object.controls.deleteControl = new Control({
       x: 0.5,
       y: -0.5,
-      offsetY: 16,
+      offsetY: -15,
       offsetX: 20,
       cursorStyle: 'pointer',
-      render: renderIcon,
+      render: (ctx, left, top) => renderIcon(ctx, left, top, object, deleteIcon),
       mouseUpHandler: handleDeleteActiveObject,
+    });
+
+    // Copy control
+    object.controls.copyControl = new Control({
+      x: 0.5,
+      y: -0.5,
+      offsetY: 20,
+      offsetX: 20,
+      cursorStyle: 'pointer',
+      render: (ctx, left, top) => renderIcon(ctx, left, top, object, copyIcon),
+      mouseUpHandler: handleCopyAndPasteActiveObject,
     });
 
     function renderIcon(
       ctx: CanvasRenderingContext2D,
       left: number,
       top: number,
-      fabricObject: FabricObject
+      fabricObject: FabricObject,
+      iconSrc: string
     ) {
-      const size = 24;
+      const size = 20;
       const img = new Image();
-      img.src = deleteIcon
+      img.src = iconSrc;
 
       img.onload = () => {
         ctx.save();
-        ctx.translate(left - size / 2, top - size / 2);
-        ctx.rotate(util.degreesToRadians(fabricObject.angle)); // オブジェクトの角度に合わせて回転
-        ctx.drawImage(img, 0, 0, size, size); // 画像を描画
+        ctx.translate(left, top);
+        // 回転をオブジェクトの角度に合わせる
+        ctx.rotate(util.degreesToRadians(fabricObject.angle));
+        const scaleX = fabricObject.scaleX || 1;
+        const scaleY = fabricObject.scaleY || 1;
+        ctx.scale(scaleX, scaleY);
+        ctx.drawImage(img, -size / 2, -size / 2, size, size);
         ctx.restore();
       };
     }
-  };
+
+    object.setCoords();
+  }
 
   // Bold
   fontWeightRef.current = () => {
@@ -263,6 +285,7 @@ export const FabricCanvas = ({
     applyCustomControlsToObject(image);
     canvasRef.current?.renderAll();
   };
+
   // 数字
   addNumberRef.current = (num: number) => {
     const textbox = new Textbox(num.toString(), {
@@ -282,7 +305,7 @@ export const FabricCanvas = ({
   };
 
   // オブジェクトの削除
-  const handleDeleteActiveObject = () => {
+  function handleDeleteActiveObject (): void {
     const activeObject = canvasRef.current?.getActiveObject();
 
     if (activeObject) {
@@ -340,6 +363,46 @@ export const FabricCanvas = ({
     }
   };
   setColorRef.current = applyColorToActiveObject;
+
+  // Copy and Paste
+  let clipboard: FabricObject | null = null;
+
+  async function copy() {
+    const activeObject = canvasRef.current?.getActiveObject();
+    if (!activeObject) return;
+
+    try {
+      clipboard = await activeObject.clone();
+    } catch (error) {
+      console.error("Error cloning object: ", error);
+    }
+  }
+
+  async function paste() {
+    if (!clipboard || !canvasRef.current) return;
+
+    try {
+      const clonedObj = await clipboard.clone();
+      canvasRef.current.discardActiveObject();
+
+      clonedObj.set({
+        left: clonedObj.left + 10,
+        top: clonedObj.top + 10,
+        evented: true, // 操作可能にする
+      });
+
+      canvasRef.current.add(clonedObj);
+      applyCustomControlsToObject(clonedObj);
+      canvasRef.current.renderAll();
+    } catch (error) {
+      console.error("Error pasting object: ", error);
+    }
+  }
+
+  async function handleCopyAndPasteActiveObject() {
+    await copy();
+    await paste();
+  }
 
   return <canvas ref={canvasEl} />;
 };
