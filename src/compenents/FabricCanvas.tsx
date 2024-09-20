@@ -339,7 +339,7 @@ export const FabricCanvas = ({
     const dataURL = canvasRef.current.toDataURL({
       format: "png",
       quality: 1.0,
-      multiplier: 1.0,
+      multiplier: 3.0,
     });
 
     const link = document.createElement("a");
